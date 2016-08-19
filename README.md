@@ -2,3 +2,6 @@
 
 ##Description
 **Russian Grammar Analyser** is an online application written in HTML, Javascript and Python for the acute grammatical analysis of Russian texts. 
+
+##Demo
+![rga-demo](https://cloud.githubusercontent.com/assets/17185335/17822603/ba60492e-6660-11e6-9d06-4d22ff4877fa.gif)
