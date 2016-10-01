@@ -5,31 +5,45 @@
 		<title>Russian Text Analyser</title>
 		<meta charset="UTF-8">
 		<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-		
 	</head>
 	
 	
 
-	
+	<!-- Preloader -->
 	<div id="preloader">
 		  <div id="status">&nbsp;</div>
 	</div>
 
-	<div id="editable_div" " contenteditable="true"><span style="font-size: 1.5em;">Добро пожаловать в Russian Grammar Analyser!</span><br><br><br><br><span style="font-size: 1.2em;">To use: <br><br><br> 1. Simply type or paste some Russian text here and click </span><span style="font-weight: 800; font-size: 1.4em;">  'ANALYSE'</span><span style="font-size: 1.2em;"><br><br><br>2. Click on a word to retrieve a translation and a grammatical analysis</span>
-		<br><br><br><br><br><br><br><br><span style="font-size: 2em; font-weight: 800px; position:relative; left: 34%; cursor: pointer;" onclick="begin()">Click to begin!</span>
+	
+	<!-- Editable Div -->
+	<div id="editable_div" " contenteditable="true">
+		<span style="font-size: 1.5em;">Добро пожаловать в Russian Grammar Analyser!</span><br><br><br><br><span style="font-size: 1.2em;">
+		To use: <br><br><br> 1. Simply type or paste some Russian text here and click </span><span style="font-weight: 800; font-size: 1.4em;">
+		'ANALYSE'</span><span style="font-size: 1.2em;"><br><br><br>2. Click on a word to retrieve a translation and a grammatical analysis</span>
+		<br><br><br><br><br><br><br><br><span style="font-size: 2em; font-weight: 800px; position:relative; left: 34%; cursor: pointer;" onclick="begin()">
+		Click to begin!</span>
 	</div>
 	
+	<!-- Analyse Button -->
 	<div id="button" class="analyse_button">   Analyse</div>
 	
+	<!-- Screen -->
 	<div id="terminal">
+		
 		<h2 id="searchterm" class="terminal">собака</h2>
 		<h3 id="wordtype" class="terminal"><span id="word_type">noun.</span></h3><span id="whatcase" class="terminal">nominative singular of (default)</span><span class="terminal" id="thiscase">собака</span>
+		
+		<!-- Loading Animation -->
 		<div id="loading">
 			<img id="gif" src="/static/cat.gif" />
 			<h6>загрузка... </h6>
 		</div>
+		
+		<!-- Translation -->
 		<h4 class="terminal" id="definition">Translation: Dog</h4>
+		<!-- Alternative Translation -->
 		<h6 class="terminal" id="alt_translations">Alternative Translations: <span id="alt_translations_span">traffic, eggs, movement</h6>
+		
 		
 		<!-- DECLENSION TABLE -->
 		
@@ -43,6 +57,7 @@
 				<td><b>instrumental</b></td>
 				<td><b>prepositional</b></td>
 			</tr>
+			
 			<tr >
 				<td id="nominative_singular">nominative</td>
 				<td id="accusative_singular">accusative</td>
@@ -51,6 +66,7 @@
 				<td id="instrumental_singular">instrumental</td>
 				<td id="prepositional_singular">prepositional</td>
 			</tr>
+			
 			<tr class="declension_table_plural">
 				<td><b>nom plr.</b></td>
 				<td><b>accusative plr.</b></td>
@@ -59,6 +75,7 @@
 				<td><b>instrumental plr.</b></td>
 				<td><b>prepositional plr.</b></td>
 			</tr>
+			
 			<tr>
 				<td id="nominative_plural">nominative</td>
 				<td id="accusative_plural">accusative</td>
@@ -73,9 +90,11 @@
 		<!-- CONJUGATION TABLE -->
 		<h5 class="terminal" id="conjugation">Conjugation Pattern:</h5>
 		<table id="conjugation_table">
+			
 			<tr class="conjugation_table_present">
 				<td colspan="3"><b>Present</b></td>
 			</tr>
+			
 			<tr>
 				<td id="first_person_present">я атаку́ю</td>
 				<td id="second_person_present">ты атаку́ешь</td>
@@ -85,25 +104,26 @@
 			<tr class="conjugation_table_past">
 				<td colspan="3"><b>Past</b></td>
 			</tr>
+			
 			<tr >
 				<td id="past" colspan="3">я атаку́ю</td>
 			</tr>
 			
 		</table>
-		
-		
-		
-		
-		
+
 	</div>
 	
+	
+	
+	<!-- SCRIPTS -->
 	
 	<script>
 	
 	
 	$.ajaxSetup({
       "error":function() {
-
+		
+		<!-- Temporarily deactivated for debugging -->
 
 		<!--document.getElementById('searchterm').style.opacity = '1';
 		<!--document.getElementById('searchterm').innerHTML = "ERROR:"
@@ -120,11 +140,14 @@
 	  }
 	});
 	
+	
+		<!-- Preloader Functions -->
 		jQuery(window).load(function() {
 				jQuery("#preloader").delay(800).fadeOut(650, "swing");
 				
 				})
-				
+		
+		
 		function begin(){
 			document.getElementById('button').style.opacity = '1';
 			document.getElementById('editable_div').innerHTML = '';
@@ -134,7 +157,8 @@
 			
 		}
 		
-		
+	
+	<!-- Event Listener: If user pastes text, remove formatting -->
 	document.querySelector("div[contenteditable]").addEventListener("paste", 
 	function(e) {e.preventDefault();
     var text = e.clipboardData.getData("text/plain");
@@ -142,12 +166,13 @@
 	});
 	
 	
+	
+	
+	<!-- Convert Text into seperate hyperlinks -->
 	var count = 1;
 	
 	$("#button" ).click(function() {
-	
-		
-		
+
 		if (count % 2 != 0){		
 		var x = document.getElementById('editable_div').innerHTML;
 		var res = x.replace(/ /g, "</a> <a class='word' onclick='getTrans(this.innerHTML)'>");
@@ -167,6 +192,7 @@
 	}); 
 		
 		
+	<!-- Translation Function-->
 	function getTrans(thing){
 		$( "#conjugation_table" ).css( "display", "none");
 		$( "#conjugation" ).css( "display", "none");
@@ -180,7 +206,7 @@
         }, function(data) {
 		
 		
-		
+		<!-- Publish Data -->
 		if (data.result[0].word_type == "noun.") {
 				
 
@@ -290,9 +316,7 @@
 			<!--alert(document.getElementById('searchterm').innerHTML);
 			<!--alert(document.getElementById('genitive_singular').innerHTML);
 			
-		
-			
-			
+	
 			if (document.getElementById('searchterm').innerHTML == document.getElementById('nominative_singular').innerHTML){
 				$("#whatcase").text("infinitive form of");
 	
@@ -302,13 +326,7 @@
 			
 			}
 			
-			
-			
-			
-			
-		  
-		  
-		  
+
         })
 		
 		.error(function() { 
